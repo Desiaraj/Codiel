@@ -1,7 +1,9 @@
 //create a function to get invoke from index.js file 
 
 module.exports.home = function(req,res){
-    return res.end("<h1>Codiel app up </h1>");
+   return res.render('home',{
+     'title':"Codiel Home"
+   });
 }
 
 module.exports.dashboard = function(req,res){
