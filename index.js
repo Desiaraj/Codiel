@@ -2,6 +2,16 @@ const express = require('express');
 
 const app = express();
 const port = 8000;
+const expressLayouts = require('express-ejs-layouts');
+
+app.use(express.static('./assets'));
+
+//extract style and scripts form sub pages 
+
+app.set('layout extractStyles',true);
+app.set('layout extractScripts',true);
+
+app.use(expressLayouts);
 
 app.use('/',require('./routes/index'));
 
