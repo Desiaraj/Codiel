@@ -1,10 +1,33 @@
-const userSchema = require('../models/user');
+
+const User = require('../models/user');
 
 module.exports.profile = function(req,res){
-    console.log("<h1> Profile page called</h1>");
-    return res.render('user',{
-        "title":"User Profile"
-    })
+    var localCookie = req.cookies;
+    console.log(localCookie);
+    const userId = localCookie.user_id;
+    console.log(userId);
+    if(userId){
+        console.log("inside check");
+        User.findById(userId).then((user)=>{
+            if(user){
+             return res.render('user',{
+                 "title":"Profile",
+                 "email":user.email,
+                 "name":user.name
+             });
+            }else{
+             //user not found
+             return res.redirect('/users/signin');
+            }
+         }).catch((err)=>{
+          console.log("Error getting user from database",err);
+          return;
+         });
+    }else{
+        return res.redirect('/users/signin');
+    }
+
+    
 }
 
 //create signUp action
@@ -16,9 +39,27 @@ module.exports.signUp = function(req,res){
 
 //create signIn action
 module.exports.signIn = function(req,res){
-    return res.render('user_sign_in',{
-        title:"SignIn"
-    })
+    if(req.cookies.user_id){
+        User.findById(req.cookies.user_id).then((user)=>{
+           if(user){
+            return res.redirect('/users/profile');        
+           }else{
+            return res.render('user_sign_in',{
+                title:"SignIn"
+            })
+           }
+        }).catch((err)=>{
+            console.log("error while fetch user info ",err);
+            return res.render('user_sign_in',{
+                title:"SignIn"
+            })
+        }) 
+    }else{
+        return res.render('user_sign_in',{
+            title:"SignIn"
+        })
+    }
+    
 }
 
 //Get the signUp data
@@ -30,9 +71,9 @@ module.exports.create = function(req,res){
         return res.redirect('back');
     }
 
-    userSchema.findOne({email:req.body.email}).then((result)=>{
+    User.findOne({email:req.body.email}).then((result)=>{
         if(!result){
-            userSchema.create(req.body).then((user)=>{
+            User.create(req.body).then((user)=>{
                console.log("Response",user);
                return res.redirect('/users/signin');
             }).catch((err)=>{
@@ -51,5 +92,33 @@ module.exports.create = function(req,res){
 
 //User signIn
 module.exports.createSession = function(req,res){
-    //TODO create new session for a user
+    //steps to authenticate 
+   
+    //find a user
+    User.findOne({email:req.body.email}).then((response)=>{
+        
+    if(response){
+      //handle user found
+      //handle password correct
+      if(response.password != req.body.password){
+        return res.redirect('back');
+      } 
+      //handle session
+      res.cookie('user_id',response.id);
+      return res.redirect('/users/profile');     
+    }else{
+      //handle cases if user not found
+      return res.redirect('back');
+    }   
+    }).catch((err)=>{
+    console.log("Error finding the user in database");
+    return;
+    });   
+}
+
+
+//signOut the user 
+module.exports.signout = function(req,res){
+    res.cookie('user_id',"");
+    return res.redirect('/users/signin');
 }
