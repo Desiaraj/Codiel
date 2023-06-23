@@ -1,5 +1,9 @@
-body{
-    margin: 0px;
-    text-align: center;
-    background-color: aqua;
+body {
+  margin: 0px;
+  text-align: center;
+  background-color: aqua;
+}
+
+#div-body {
+  height: 100%;
 }

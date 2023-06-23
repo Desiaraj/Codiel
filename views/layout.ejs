@@ -5,6 +5,8 @@
          </title>
 
          <link rel="stylesheet" href="/css/layouts.css">
+         <link rel="stylesheet" href="/css/header.css">
+         <link rel="stylesheet" href="/css/footer.css">
          <%- style %>
     </head>
 
@@ -12,7 +14,11 @@
         
         <%- include('_header.ejs'); %>
         
-        <%- body %>
+        <div id="div-body">
+            <%- body %>
+        </div>
+
+        
 
         <%- include('_footer'); %>
 

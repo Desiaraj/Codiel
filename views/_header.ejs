@@ -1,19 +1,22 @@
 <header>
-    Page Header
-
-    <ul>
-        <% if (locals.user){ %>
-            <li><%= user.name %></li>
-            <li>
-                <a href="/users/signout">SignOut</a>
-            </li>
-        <% }else{ %>
-           <li>
-              <a href="/users/signin">SignIn</a>
-           </li>
-           <li>
-             <a href="/users/signup">SignUp</a>
-           </li>
-        <% } %>          
-    </ul>
+    
+    <div id="div-header">
+        <p>Codiel</p>
+        <ul id="header-option">
+            <% if (locals.user){ %>
+                <li><%= user.name %></li>
+                <li>
+                    <a href="/users/signout">SignOut</a>
+                </li>
+            <% }else{ %>
+               <li>
+                  <a href="/users/signin">SignIn</a>
+               </li>
+               <li>
+                 <a href="/users/signup">SignUp</a>
+               </li>
+            <% } %>          
+        </ul>
+    </div>
+   
 </header>
