@@ -15,20 +15,6 @@ module.exports.create = function(req,res){
     });
 }
 
-module.exports.createComment = function(req,res){
-     
-    Comment.create({
-        content:req.body.content,
-        post:req.body.post,
-        user:req.user._id
-    }).then((response)=>{
-        console.log("Response ",response);
-        res.redirect('back');
-    }).catch((err)=>{
-       console.log("error while create comment ",err);
-       res.redirect('back');
-    });
-}
 
 module.exports.delete = function(req,res){
     return res.end("Delete the post ");
