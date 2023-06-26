@@ -5,12 +5,13 @@
         
         <section>
             <h4>Posts</h4>
+            <% if(locals.user) { %>
 
             <form action="/posts/create" id="new-post" method="POST">
                 <textarea name="content"cols="30" rows="4" placeholder="type here.."></textarea>
                 <input type="submit" value="create post">
             </form>
-
+            <% } %>
             <div id="post-list-container">
                 <ul>
                    <% for(post of posts) { %>
@@ -18,7 +19,31 @@
                     <p>
                         <li>
                             <%= post.content %>
-                            <%= post.user.name %>
+                            <small>
+                                <%= post.user.name %>
+                            </small>
+                            
+                            <% if(locals.user) { %>
+
+                                <form action="/comment/create" id="new-comment" method="POST">
+                                    <textarea name="content"cols="10" rows="3" placeholder="type a comment"></textarea>
+                                    <input type="hidden" name="post" value="<%= post._id %>">
+                                    <input type="submit" value="create comment">
+                                </form>
+                                <% } %>
+
+                            <div id="comment-list">
+                                <ul>
+                                    <% for(comment of post.comments) { %>
+                                        <%= comment.content %>
+                                        <small>
+                                            <%= comment.user.name %>
+                                        </small>   
+
+                                    <% } %>    
+                                </ul>
+
+                            </div>    
                         </li>
     
                     </p>

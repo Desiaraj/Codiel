@@ -7,7 +7,14 @@ module.exports.home = async function(req,res){
   // res.cookie('user_id',25);
 
    const posts = await Post.find({})
-   .populate('user').exec();
+   .populate('user')
+   .populate({
+     path:'comments',
+     populate:{
+       path:'user'
+     }
+   })
+   .exec();
 
    return res.render('home',{
       'title':"Codiel Home",

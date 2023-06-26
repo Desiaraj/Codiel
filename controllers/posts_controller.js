@@ -1,4 +1,5 @@
 const Post = require('../models/post');
+const Comment = require('../models/comment');
 
 module.exports.create = function(req,res){
 
@@ -11,6 +12,21 @@ module.exports.create = function(req,res){
     }).catch((err)=>{
        console.log("Can't able to create post");
        return res.redirect('back');
+    });
+}
+
+module.exports.createComment = function(req,res){
+     
+    Comment.create({
+        content:req.body.content,
+        post:req.body.post,
+        user:req.user._id
+    }).then((response)=>{
+        console.log("Response ",response);
+        res.redirect('back');
+    }).catch((err)=>{
+       console.log("error while create comment ",err);
+       res.redirect('back');
     });
 }
 

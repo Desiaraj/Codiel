@@ -15,6 +15,7 @@ router.get('/dashboard',homeController.dashboard);
 
 router.use('/users',require('./users'));
 router.use('/posts',require('./posts'));
+router.use('/comment',require('./comment'));
 
 //exports the router to all modules 
 

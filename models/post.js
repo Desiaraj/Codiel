@@ -5,10 +5,18 @@ const postSchema = mongoose.Schema({
         type:String,
         required:true
     },
+    //comment belong to the user
     user:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'
-    }
+    },
+    //include ids of comments 
+    comments:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'comment'  
+        }
+    ]
 },
  {
     timestamps:true
