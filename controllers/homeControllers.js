@@ -1,4 +1,5 @@
 const Post = require('../models/post');
+const User = require('../models/user');
 
 //create a function to get invoke from index.js file 
 
@@ -16,11 +17,24 @@ module.exports.home = async function(req,res){
    })
    .exec();
 
-   return res.render('home',{
+   User.find({}).then((users)=>{
+    return res.render('home',{
       'title':"Codiel Home",
-      'posts':posts
+      'posts':posts,
+      'all_users':users
    });
-  //  function(err,posts){
+
+   }).catch((err)=>{
+    console.log("Error while get users list ",err);
+    return res.render('home',{
+      'title':"Codiel Home",
+      'posts':posts,
+      'all_users':[]
+   });
+   });
+
+
+     //  function(err,posts){
   //   if(err){
   //     return res.render('home',{
   //       'title':"Codiel Home",

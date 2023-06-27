@@ -1,10 +1,20 @@
 const userSchema = require('../models/user');
 
 module.exports.profile = function(req,res){
-    console.log("<h1> Profile page called</h1>");
-    return res.render('user',{
-        "title":"User Profile"
-    })
+     
+    userSchema.findById(req.params.id).then((user)=>{
+        return res.render('user',{
+            "title":"User Profile",
+            'profile_user':user
+        })
+    }).catch((err)=>{
+        console.log("Error while find user",err);
+        return res.render('user',{
+            "title":"User Profile"
+        })
+    });
+
+    
 }
 
 //create signUp action
