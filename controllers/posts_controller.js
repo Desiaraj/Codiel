@@ -17,7 +17,26 @@ module.exports.create = function(req,res){
 
 
 module.exports.delete = function(req,res){
-    return res.end("Delete the post ");
+    Post.findById(req.params.id).then((post)=>{
+         //check the user 
+         //.id means converting object to string 
+         if(post.user == req.user.id){
+              post.deleteOne();
+              
+              Comment.deleteMany({post:req.params.id}).then((response)=>{
+                  return res.redirect('back');
+              }).catch((err)=>{
+                 console.log("Error in deleting comments");
+                 return res.redirect('back');
+              });
+
+         }else{
+            return res.redirect('back');
+         }
+    }).catch((err)=>{
+      console.log("Post not there",err);
+      return res.redirect('back');
+    });
 }
 
 module.exports.update = function(req,res){
