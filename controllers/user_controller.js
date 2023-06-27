@@ -17,6 +17,19 @@ module.exports.profile = function(req,res){
     
 }
 
+module.exports.update = function(req,res){
+    if(req.user.id == req.params.id){
+        userSchema.findByIdAndUpdate(req.params.id,req.body).then((response)=>{
+            return res.redirect('back');     
+        }).catch((err)=>{
+            console.log("Error while update the user");
+            return res.redirect('back');    
+        });
+    }else{
+        return res.status(401).send("UnAuthorized");
+    }
+}
+
 //create signUp action
 module.exports.signUp = function(req,res){
     if(req.isAuthenticated()){
