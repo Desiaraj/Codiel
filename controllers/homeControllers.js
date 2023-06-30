@@ -6,55 +6,28 @@ const User = require('../models/user');
 module.exports.home = async function(req,res){
   // console.log(req.cookies);
   // res.cookie('user_id',25);
-
-   const posts = await Post.find({})
+   
+    try{
+      let posts = await Post.find({})
    .populate('user')
    .populate({
      path:'comments',
      populate:{
        path:'user'
      }
-   })
-   .exec();
-
-   User.find({}).then((users)=>{
-    return res.render('home',{
-      'title':"Codiel Home",
-      'posts':posts,
-      'all_users':users
    });
 
-   }).catch((err)=>{
-    console.log("Error while get users list ",err);
-    return res.render('home',{
-      'title':"Codiel Home",
-      'posts':posts,
-      'all_users':[]
-   });
-   });
+   let users = await User.find({});
+      return res.render('home',{
+        'title':"Codiel Home",
+        'posts':posts,
+        'all_users':users
+       });
 
-
-     //  function(err,posts){
-  //   if(err){
-  //     return res.render('home',{
-  //       'title':"Codiel Home",
-  //       'posts':[]
-  //     }); 
-  //   }
-  //   return res.render('home',{
-  //     'title':"Codiel Home",
-  //     'posts':posts
-  //   });      
-  // }
-
-  //  .then((posts)=>{
-    
-  //  }).catch((err)=>{
-  //   return res.render('home',{
-  //     'title':"Codiel Home"
-  //   });
-  //  })
-  
+    }catch(err){
+      console.log("Error ",err);
+      return;
+    }
 }
 
 module.exports.dashboard = function(req,res){
