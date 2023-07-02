@@ -63,16 +63,20 @@ module.exports.create = function(req,res){
         if(!result){
             userSchema.create(req.body).then((user)=>{
                console.log("Response",user);
+               req.flash('success',"Welcome to the Codiel");
                return res.redirect('/users/signin');
             }).catch((err)=>{
+               req.flash('error',"can't able to create new user"); 
                console.log("error while creating the user",err);
                return;
             });
         }else{
             console.log("user already exists");
+            req.flash('error',"User already exists");
             return res.redirect('back');
         }
     }).catch((err)=>{
+        req.flash('error',"Please try again later");
         console.log("Got error while find the user");
         return;
     });
@@ -81,12 +85,14 @@ module.exports.create = function(req,res){
 //User signIn
 module.exports.createSession = function(req,res){
     console.log("Redirect to success");
+    req.flash('success',"User LoggedIn successfully");
     return res.redirect('/');
 }
 
 module.exports.clearSession = function(req,res){
     req.logout(function(err) {
         if (err) { return next(err); }
+        req.flash('success',"You will logged out successfully");
         res.redirect('/');
       });
 }

@@ -12,6 +12,8 @@ const sassMiddleware = require('node-sass-middleware');
 
 const MongoStore = require('connect-mongo');
 const db = require('./config/mongoose');
+const flash = require('connect-flash');
+const customMiddleware = require('./config/middleware');
 
 app.use(sassMiddleware({
   src: './assets/scss',
@@ -20,6 +22,7 @@ app.use(sassMiddleware({
   outputStyle:'expanded',
   prefix:'/css'
 }))
+
 
 app.use(express.urlencoded());
 
@@ -62,6 +65,10 @@ app.use(expressSession({
 // //init passport
 app.use(passport.initialize());
 app.use(passport.session());
+
+//add flash middleware
+app.use(flash());
+app.use(customMiddleware.settingFlash);
 
 app.use(passport.setAuthenticatedUser);
 app.use('/',require('./routes/index'));
